@@ -6,14 +6,12 @@
 Calendar::Calendar(Month_e month,
                    int year)
 {
-    this->months.push(Month(month, year));
-    this->goingForward = false;
+    this->months.push(new Month(month, year));
+    this->goingForward = true;
 }
 
 void Calendar::Input()
 {
-    if (months.size() == 1)
-        this->goingForward = !this->goingForward;
     char inputText;
     std::cin >> inputText;
     switch (inputText)
@@ -21,51 +19,63 @@ void Calendar::Input()
     case 'n':
         this->Next();
         break;
-    case 'p':
+    case 'b':
         this->Previous();
         break;
     default:
-        Month& topMonth = this->months.top();
-        if ((int)inputText > 0 && (int)inputText < topMonth.ReturnNumberOfDays())
-            topMonth.Update((int)inputText, FG_GREEN);
-        topMonth.Update((int)inputText, FG_GREEN);
         break;
     }
+    // if ((int)inputText > 0 && (int)inputText < topMonth.ReturnNumberOfDays())
+        // topMonth.Update((int)inputText, FG_GREEN);
 }
 
 
 void Calendar::Print()
 {
-    Month& topMonth = this->months.top();
-    topMonth = months.top();
-    topMonth.Print();
+    this->months.top()->Print();
 }
 
 void Calendar::Next()
 {
-    Month& topMonth = this->months.top();
-    topMonth = months.top();
+    if (this->months.size() == 1)
+        this->goingForward = true;
+    
     if (this->goingForward)
     {
-        if (topMonth.ReturnMonth() == 12)
-            this->months.push(Month(JAN,
-                                    topMonth.ReturnYear() + 1));
+        if (Month_e(this->months.top()->ReturnMonth()) == DEC)
+        {
+            this->months.push(new Month(JAN,
+                                    this->months.top()->ReturnYear()     + 1));
+        }
         else
-            this->months.push(Month(Month_e(topMonth.ReturnMonth() + 1),
-                                    topMonth.ReturnYear()));
+        {
+            this->months.push(new Month(Month_e(this->months.top()->ReturnMonth() + 1),
+                                    this->months.top()->ReturnYear()));
+        }
+    
     }
     else
     {
-        if (topMonth.ReturnMonth() == 1)
-            this->months.push(Month(DEC,
-                                    topMonth.ReturnYear() - 1));
-        else
-            this->months.push(Month(Month_e(topMonth.ReturnMonth() - 1),
-                                    topMonth.ReturnYear()));
+        this->months.pop();
     }
 }
 
 void Calendar::Previous()
 {
-    this->months.pop();
+    if (this->months.size() == 1)
+        this->goingForward = false;
+    
+    if (this->goingForward)
+    {
+        this->months.pop();
+    }
+    else
+    {
+        if (this->months.top()->ReturnMonth() == 1)
+            this->months.push(new Month(DEC,
+                                    this->months.top()->ReturnYear() - 1));
+        else
+            this->months.push(new Month(Month_e(this->months.top()->ReturnMonth() - 1),
+                                    this->months.top()->ReturnYear()));
+    }
 }

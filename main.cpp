@@ -3,12 +3,13 @@
 
 int main()
 {
-    Calendar c(SEP, 2023);
+    Calendar c(SEP, 2021);
+    c.Print();
 
     while(true)
     {
-        c.Print();
         c.Input();        
+        c.Print();
     }
 
     return 0;

@@ -5,7 +5,7 @@
 class Calendar
 {
 private:
-    std::stack<Month> months;
+    std::stack<Month*> months;
     bool goingForward;
 
 public:

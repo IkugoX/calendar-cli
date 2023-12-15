@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& os, const Month_e& monthEnum)
 
 void Month::Print()
 {
-    std::cout << "         " << this->month
+    std::cout << "         " << this->month << "     " << this->year
             //<< "\n~~~~~~~~~~~~~~~~~~~~~\n";
               << "\n---------------------\n"; 
     this->PrintDays();
