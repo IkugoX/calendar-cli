@@ -20,7 +20,7 @@ public:
     Month(Month_e month,
              int year);
     void Print();
-    void Update(int, ColourCode);
+    void Update(int, std::string, ColourCode);
     
     int ReturnMonth();
     int ReturnYear();

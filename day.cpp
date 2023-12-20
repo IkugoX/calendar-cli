@@ -9,9 +9,9 @@ Day::Day(int index,
     this->colour = colour;
 }
 
-void Day::Update(ColourCode& todo_change)
+void Day::Update(std::string eventName, ColourCode& colourForEvent)
 {
-    this->colour = todo_change;
+    this->colour = colourForEvent;
 }
 
 

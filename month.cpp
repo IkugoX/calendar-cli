@@ -11,8 +11,6 @@ Month::Month(Month_e month,
 {
     this->month = month;
     this->year = year;
-    // this->startingIndex = (year + year/4 - year/100 + year/400
-    //                         + dayOffset[month-1] + 1) % 7;
     
     int q = 1;
     int m = month;
@@ -65,12 +63,12 @@ void Month::PrintDays()
     }
 }
 
-void Month::Update(int index, ColourCode todo_change)
+void Month::Update(int index, std::string eventName, ColourCode colourForEvent)
 {
     if (index < 1 || index > this->numberOfDays)
         return;
     
-    this->days[index-1].Update(todo_change);
+    this->days[index-1].Update(eventName, colourForEvent);
 }
 
 int Month::ReturnMonth()

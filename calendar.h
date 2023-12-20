@@ -16,5 +16,5 @@ public:
 private:
     void Next();
     void Previous();
-    void Update(int);
+    void Update();
 };

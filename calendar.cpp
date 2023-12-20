@@ -16,27 +16,27 @@ void Calendar::Input()
     std::cin >> inputText;
     switch (inputText)
     {
+    case 'N':
     case 'n':
         this->Next();
         break;
+    case 'B':
     case 'b':
         this->Previous();
         break;
-    default:
-        int index = (int)inputText - 48;
-        if (index >= 1
-            && index <= this->months.top()->ReturnNumberOfDays())
-            this->Update(index);
-        break;
+    case 'e':
+    case 'E':
+        this->Update();
+         break;
     }
     // if ((int)inputText > 0 && (int)inputText < topMonth.ReturnNumberOfDays())
         // topMonth.Update((int)inputText, FG_GREEN);
 }
 
-
 void Calendar::Print()
 {
     this->months.top()->Print();
+    std::cout << "\nb - Back     n - Next     e - Edit\n";
 }
 
 void Calendar::Next()
@@ -84,7 +84,91 @@ void Calendar::Previous()
     }
 }
 
-void Calendar::Update(int index)
+
+#define AVALABLE_COLOURS 6
+bool validColour(char& userColour)
 {
-    this->months.top()->Update(index, FG_GREEN);
+    //check validity
+    char validColours[AVALABLE_COLOURS] = {'r', 'g', 'b', 'c', 'm', 'y'};
+    for (size_t i = 0; i < AVALABLE_COLOURS; i++)
+    {
+        if (validColours[i] == userColour)
+            return true;
+    }
+    std::cout << "ERROR: Invalid colour";
+    return false;
+}
+
+void Calendar::Update()
+{
+    int index;
+    std::cout << "On what date is the event? "
+              << "(1.." << this->months.top()->ReturnNumberOfDays() << ")\n";
+    std::cin >> index;
+    if (index < 1
+        || index > this->months.top()->ReturnNumberOfDays())
+    {
+        std::cout << "ERROR: Invalid date";
+        return;
+    }
+
+    ColourCode colourForEvent;
+    bool isBold;
+    //NAME
+    std::string eventName;
+    std::cout << "What is the event called?\n";
+    std::cin >> eventName;
+    
+    //COLOUR
+    std::cout << "Select a colour for the event:\n"
+              << "r - Red    g - Green     b - Blue\n"
+              << "c - Cyan   m - Magenta   y - Yellow\n";
+    char userColour;
+    std::cin >> userColour;
+
+    if (!validColour(userColour))
+        return;
+    
+    //COLOUR BOLD
+    std::cout << "Do you want the colour to be bold?\n"
+              << "y - Yes    n - No\n";
+    char userBold;
+    std::cin >> userBold;
+    if (userBold == 'y')
+        isBold = true;
+    else if (userBold == 'n')
+        isBold = false;
+    else
+    {
+        std::cout << "ERROR: Invalid boldness option";
+        return;
+    }
+    
+    switch (userColour)
+    {
+    case 'r':
+        colourForEvent = isBold ? BG_RED : FG_RED;
+    break;
+    case 'g':
+        colourForEvent = isBold ? BG_GREEN : FG_GREEN;
+    break;
+    case 'b':
+        colourForEvent = isBold ? BG_BLUE : FG_BLUE;
+    break;
+    case 'c':
+        colourForEvent = isBold ? BG_CYAN : FG_CYAN;
+    break;
+    case 'm':
+        colourForEvent = isBold ? BG_MAGENTA : FG_MAGENTA;
+    break;
+    case 'y':
+        colourForEvent = isBold ? BG_YELLOW : FG_YELLOW;
+    break;
+    default:
+        std::cout << "ERROR: colour not handled";
+        return;
+    break;
+    }
+
+    this->months.top()->Update(index, eventName, colourForEvent);
 }

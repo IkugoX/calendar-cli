@@ -8,8 +8,10 @@ int main()
 
     while(true)
     {
+        // std::cout << "\033[2J\033[H"; 
         c.Input();        
         c.Print();
+        std::cout << std::endl;
     }
 
     return 0;
