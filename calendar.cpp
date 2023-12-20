@@ -23,6 +23,10 @@ void Calendar::Input()
         this->Previous();
         break;
     default:
+        int index = (int)inputText - 48;
+        if (index >= 1
+            && index <= this->months.top()->ReturnNumberOfDays())
+            this->Update(index);
         break;
     }
     // if ((int)inputText > 0 && (int)inputText < topMonth.ReturnNumberOfDays())
@@ -78,4 +82,9 @@ void Calendar::Previous()
             this->months.push(new Month(Month_e(this->months.top()->ReturnMonth() - 1),
                                     this->months.top()->ReturnYear()));
     }
+}
+
+void Calendar::Update(int index)
+{
+    this->months.top()->Update(index, FG_GREEN);
 }

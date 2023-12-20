@@ -24,7 +24,7 @@ private:
 public:
     Day(int index = 255,
         std::string description = "N/A",
-        ColourCode colour = BG_DEFAULT);
+        ColourCode colour = FG_DEFAULT);
         
     void Update(ColourCode&);
 
