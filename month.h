@@ -25,6 +25,7 @@ public:
     int ReturnMonth();
     int ReturnYear();
     int ReturnNumberOfDays();
+    Day& ReturnDay(int);
 private:
     void PrintDays();
 };

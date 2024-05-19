@@ -11,6 +11,7 @@ Day::Day(int index,
 
 void Day::Update(std::string eventName, ColourCode& colourForEvent)
 {
+    this->description = eventName;
     this->colour = colourForEvent;
 }
 

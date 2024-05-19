@@ -1,13 +1,23 @@
 #include "calendar.h"
 
-#include <ctype.h>
-
-
 Calendar::Calendar(Month_e month,
                    int year)
 {
+    this->data.open("data.txt");
+    if (!this->data.good())
+        abort();
     this->months.push(new Month(month, year));
     this->goingForward = true;
+    this->isRunning = true;
+}
+
+Calendar::~Calendar()
+{
+    // while (!this->months.empty())
+    //     this->months.pop();
+    //no clue if i need this
+
+    this->data.close();
 }
 
 void Calendar::Input()
@@ -27,16 +37,18 @@ void Calendar::Input()
     case 'e':
     case 'E':
         this->Update();
-         break;
+        break;
+    case 'q':
+    case 'Q':
+        this->isRunning = false;
+        break;
     }
-    // if ((int)inputText > 0 && (int)inputText < topMonth.ReturnNumberOfDays())
-        // topMonth.Update((int)inputText, FG_GREEN);
 }
 
 void Calendar::Print()
 {
     this->months.top()->Print();
-    std::cout << "\nb - Back     n - Next     e - Edit\n";
+    std::cout << "\nb - Back     n - Next     e - Edit     q - Quit\n";
 }
 
 void Calendar::Next()
@@ -105,8 +117,7 @@ void Calendar::Update()
     std::cout << "On what date is the event? "
               << "(1.." << this->months.top()->ReturnNumberOfDays() << ")\n";
     std::cin >> index;
-    if (index < 1
-        || index > this->months.top()->ReturnNumberOfDays())
+    if (index < 1 || index > this->months.top()->ReturnNumberOfDays())
     {
         std::cout << "ERROR: Invalid date";
         return;
@@ -171,4 +182,17 @@ void Calendar::Update()
     }
 
     this->months.top()->Update(index, eventName, colourForEvent);
+    this->Save(this->months.top()->ReturnDay(index));
+}
+
+void Calendar::Save(Day &dayToSave)
+{
+    this->data << this->months.top()->ReturnYear()
+               << this->months.top()->ReturnMonth()
+               << dayToSave;
+}
+
+void Calendar::Load()
+{
+    
 }

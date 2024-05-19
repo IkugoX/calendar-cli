@@ -85,3 +85,8 @@ int Month::ReturnNumberOfDays()
 {
     return this->numberOfDays;
 }
+
+Day& Month::ReturnDay(int index)
+{
+    return this->days.at(index);
+}
